@@ -1,7 +1,11 @@
+//Expressサーバーインスタンスを作成
 const express = require('express');
+
 //ルーティング処理用のオブジェクトを生成して変数routerに代入
 const router = express.Router();
-const pg = require("pg");
+
+//postgresを使うために必要な宣言
+const pg = require("pg");　//これがないと13行目のpg.Poolがコンストラクターじゃないよというエラーが起きる
 const path = require("path");
 // const { name } = require("ejs"); 
 
@@ -23,9 +27,12 @@ router
                 console.log(err);
             }else{
                      // query関数の第一引数にSQL文をかく
-                    client.query("SELECT name FROM taxi_information", (err, result) =>{
+                    client.query("SELECT id,name,phonenumber FROM taxi_information", (err, result) =>{
                         res.render("index", {
-                            name: result.rows[0].name
+                            id: result.rows[0].id,
+                            name: result.rows[0].name,
+                            phonenumber: result.rows[0].phonenumber
+
                         });
 
                         //コンソール上での確認用
